@@ -1,0 +1,10 @@
+min_version = "2025.5.10"
+
+[env]
+_.file = ".env"
+_.python.venv = { create = true, path = ".venv" }
+
+[tools]
+just = "1"
+python = "3.13"
+uv = "0.9"

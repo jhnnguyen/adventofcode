@@ -1,0 +1,111 @@
+[project]
+name = "adventofcode"
+version = "1.0.0"
+readme = "README.md"
+classifiers = ["Private :: Do Not Upload"]
+requires-python = ">=3.13"
+dependencies = [
+    "pandas~=2.1",
+    "requests~=2.31",
+    "pydantic~=2.8",
+    "pydantic-settings>=2.12.0",
+]
+
+[dependency-groups]
+debug = ["ipdb~=0.13", "ipython~=8.15"]
+dev = ["mypy==1.13", "ruff~=0.11", "tqdm~=4.66"]
+pylsp = [
+    "pylsp-mypy~=0.7",
+    "pylsp-rope~=0.1",
+    "python-lsp-ruff~=2.2",
+    "python-lsp-server[all]~=1.12",
+]
+typechecking = ["mypy~=1.13", "types-requests~=2.31"]
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pyright]
+pythonVersion = "3.13"
+reportMissingImports = true
+reportMissingTypeStubs = false
+
+[tool.ruff]
+fix = true
+line-length = 88
+target-version = "py312"
+exclude = [".venv"]
+
+[tool.ruff.lint]
+select = [
+    "ARG",  # https://beta.ruff.rs/docs/rules/#flake8-unused-arguments-arg
+    "B",    # https://pypi.org/project/flake8-bugbear/
+    "BLE",  # https://pypi.org/project/flake8-blind-except/
+    "C4",   # https://github.com/adamchainz/flake8-comprehensions
+    "C90",  # https://pypi.org/project/mccabe/
+    "DJ",   # https://pypi.org/project/flake8-django/
+    "E",    # https://pycodestyle.pycqa.org/en/latest/intro.html#error-codes
+    "ERA",  # https://pypi.org/project/flake8-eradicate/
+    "EXE",  # https://pypi.org/project/flake8-executable/
+    "F",    # https://flake8.pycqa.org/en/latest/user/error-codes.html
+    "I",    # https://pycqa.github.io/isort/
+    "ICN",  # https://pypi.org/project/flake8-import-conventions/
+    "ISC",  # https://github.com/flake8-implicit-str-concat/flake8-implicit-str-concat
+    "LOG",  # https://github.com/adamchainz/flake8-logging
+    "N",    # https://github.com/PyCQA/pep8-naming
+    "PD",   # https://pypi.org/project/pandas-vet/
+    "PERF", # https://pypi.org/project/perflint/
+    "PGH",  # https://github.com/pre-commit/pygrep-hooks
+    "PIE",  # https://pypi.org/project/flake8-pie/
+    "PLC",  # https://beta.ruff.rs/docs/rules/#convention-plc
+    "PT",   # https://github.com/m-burst/flake8-pytest-style
+    "PTH",  # https://pypi.org/project/flake8-use-pathlib/
+    "RET",  # https://pypi.org/project/flake8-return/
+    "RUF",  # https://beta.ruff.rs/docs/rules/#ruff-specific-rules-ruf
+    "SIM",  # https://pypi.org/project/flake8-simplify/
+    "TRY",  # https://pypi.org/project/tryceratops/
+    "W",    # https://pycodestyle.pycqa.org/en/latest/intro.html#error-codes
+]
+ignore = [
+    "E501",    # line-too-long
+    "PLC0415", # import-outside-top-level
+    "RUF012",  # mutable-class-default
+    "TRY003",  # raise-vanilla-args
+    "PD011",   # pandas-use-of-dot-values; known issue causing false-positives - https://github.com/astral-sh/ruff/issues/6630
+    # Ignored because we use ruff format
+    "COM812",
+    "COM819",
+    "D206",
+    "D300",
+    "E111",
+    "E114",
+    "E117",
+    "ISC001",
+    "ISC002",
+    "Q000",
+    "Q001",
+    "Q002",
+    "Q003",
+    "W191",
+]
+dummy-variable-rgx = "^_[a-zA-Z0-9_]*$"
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+parametrize-names-type = "tuple"
+parametrize-values-row-type = "tuple"
+parametrize-values-type = "list"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-sort-within-sections = true
