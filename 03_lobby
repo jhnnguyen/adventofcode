@@ -1,0 +1,44 @@
+from utils.data import fetch
+
+
+class Bank:
+    def __init__(self, batteries: str):
+        self._battery_values = [int(b) for b in batteries]
+
+        self._bank_size = len(batteries)
+
+    def max_joltage(self, n_batteries: int = 2) -> int:
+        # Brute force never fails
+        max_joltage = 0
+        max_idx = 0
+
+        for i in range(n_batteries):
+            end_idx = self._bank_size - n_batteries + i + 1
+            i_battery, battery_value = self.get_max_battery(max_idx, end_idx)
+
+            max_joltage = max_joltage * 10 + battery_value
+            max_idx = i_battery + 1
+
+        return max_joltage
+
+    def get_max_battery(
+        self, offset: int | None = None, limit: int | None = None
+    ) -> tuple[int, int]:
+        offset = offset or 0
+        limit = limit or self._bank_size
+
+        idx, value = max(
+            enumerate(self._battery_values[offset:limit]), key=lambda x: x[1]
+        )
+
+        return idx + offset, value
+
+
+data = fetch(day=3)
+
+total_sum = 0
+for row in data:
+    bank = Bank(row)
+    total_sum += bank.max_joltage(n_batteries=12)
+
+print(f"Total output joltage: {total_sum}")
