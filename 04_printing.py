@@ -16,6 +16,38 @@ class Grid:
         self.rows = len(_grid)
         self.cols = len(_grid[0])
 
+    def _get_surroundings(self, x: int, y: int) -> dict[str, str | None]:
+        directions = {
+            "up": (x, y + 1),
+            "down": (x, y - 1),
+            "left": (x - 1, y),
+            "right": (x + 1, y),
+            "up_left": (x - 1, y + 1),
+            "up_right": (x + 1, y + 1),
+            "down_left": (x - 1, y - 1),
+            "down_right": (x + 1, y - 1),
+        }
+        surroundings = {}
+        for direction, (dx, dy) in directions.items():
+            surroundings[direction] = self.get_value(dx, dy)
+        return surroundings
+
+    def get_value(self, x: int, y: int) -> str | None:
+        if y < 0 or y >= self.rows or x < 0 or x >= self.cols:
+            return None
+        return self._grid[y][x]
+
+
+class ToiletGrid(Grid):
+    def __init__(self, grid: list[str]):
+        _grid = [list(row) for row in grid]
+
+        self._starting_grid = [row.copy() for row in _grid]
+        self._grid = [row.copy() for row in _grid]
+
+        self.rows = len(_grid)
+        self.cols = len(_grid[0])
+
     def is_accessible(self, x: int, y: int) -> bool:
         surroundings = self._get_surroundings(x, y)
 
@@ -41,27 +73,6 @@ class Grid:
         for x, y in rolls:
             self._remove_roll(x, y)
 
-    def _get_surroundings(self, x: int, y: int) -> dict[str, str | None]:
-        directions = {
-            "up": (x, y + 1),
-            "down": (x, y - 1),
-            "left": (x - 1, y),
-            "right": (x + 1, y),
-            "up_left": (x - 1, y + 1),
-            "up_right": (x + 1, y + 1),
-            "down_left": (x - 1, y - 1),
-            "down_right": (x + 1, y - 1),
-        }
-        surroundings = {}
-        for direction, (dx, dy) in directions.items():
-            surroundings[direction] = self.get_value(dx, dy)
-        return surroundings
-
-    def get_value(self, x: int, y: int) -> str | None:
-        if y < 0 or y >= self.rows or x < 0 or x >= self.cols:
-            return None
-        return self._grid[y][x]
-
     def print_grid(self, type: Literal["starting", "grid"] = "grid") -> None:
         match type:
             case "grid":
@@ -73,7 +84,7 @@ class Grid:
 
 
 data = fetch(day=4)
-grid = Grid(data)
+grid = ToiletGrid(data)
 
 max_iteration = 500
 removed_rolls = 0
